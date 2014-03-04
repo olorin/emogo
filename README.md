@@ -8,4 +8,4 @@ Documentation
 
 http://godoc.org/fractalcat/emogo
 
-[0] https://github.com/openyou/emokit
+[0]: https://github.com/openyou/emokit
