@@ -1,3 +1,7 @@
+/*
+The emogo package provides go bindings for emokit
+(https://github.com/openyou/emokit). 
+*/
 package emogo
 
 import (
