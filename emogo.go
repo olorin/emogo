@@ -78,3 +78,8 @@ func (e *EmokitContext) GetFrame() (*EmokitFrame, error) {
 	}
 	return nil, syscall.EAGAIN
 }
+
+// Raw returns the (unencrypted) raw EPOC frame.
+func (f *EmokitFrame) Raw() []byte {
+	return f.raw
+}
