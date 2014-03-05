@@ -7,7 +7,6 @@ package emogo
 import (
 	"errors"
 	"unsafe"
-	"fmt"
 )
 
 // #include <emokit/emokit.h>
@@ -59,9 +58,7 @@ func NewEmokitFrame() *EmokitFrame {
 // readData reads data from the EPOC dongle and returns 0 on success, <0
 // on error.
 func (e *EmokitContext) readData() error {
-	fmt.Println("getting some data")
 	n := C.emokit_read_data(e.eeg)
-	fmt.Println("got some data")
 	if n >= 0 {
 		return nil
 	}
