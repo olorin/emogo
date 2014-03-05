@@ -7,7 +7,6 @@ package emogo
 import (
 	"errors"
 	"unsafe"
-	"syscall"
 )
 
 // #include <emokit/emokit.h>
@@ -49,11 +48,14 @@ func NewEmokitFrame() *EmokitFrame {
 	return f
 }
 
-// readData reads data from the EPOC dongle and returns the number of
-// bytes read. 
-func (e *EmokitContext) readData() int {
+// readData reads data from the EPOC dongle and returns 0 on success, <0
+// on error.
+func (e *EmokitContext) readData() error {
 	n := C.emokit_read_data(e.eeg)
-	return int(n)
+	if n == 0 {
+		return nil
+	}
+	return errors.New("emokit_read_data failed")
 }
 
 func (e *EmokitContext) getNextFrame() (*EmokitFrame, error) {
@@ -69,28 +71,20 @@ func (e *EmokitContext) getNextFrame() (*EmokitFrame, error) {
 // GetFrame returns the next available EPOC frame. If there is no frame
 // to be read, the error value will be EAGAIN.
 func (e *EmokitContext) GetFrame() (*EmokitFrame, error) {
-	if e.readData() > 0 {
+	err := e.readData()
+	if err == nil {
 		f, err := e.getNextFrame()
 		if err != nil {
 			return nil, err
 		}
 		return f, nil
 	}
-	return nil, syscall.EAGAIN
+	return nil, err
 }
 
-// WaitGetFrame will block until there is a frame ready to read, and
-// then return it. 
-func (e *EmokitContext) WaitGetFrame() (*EmokitFrame, error) {
-	for {
-		f, err := e.GetFrame()
-		if err == nil {
-			return f, nil
-		} else if err == syscall.EAGAIN {
-			continue
-		}
-		return nil, err
-	}
+func (e *EmokitContext) Count() int {
+	n := C.emokit_get_count(e.eeg, C.int(EMOKIT_VID), C.int(EMOKIT_PID))
+	return int(n)
 }
 
 // Raw returns the (unencrypted) raw EPOC frame.
