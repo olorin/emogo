@@ -52,7 +52,7 @@ func NewEmokitFrame() *EmokitFrame {
 // on error.
 func (e *EmokitContext) readData() error {
 	n := C.emokit_read_data(e.eeg)
-	if n == 0 {
+	if n >= 0 {
 		return nil
 	}
 	return errors.New("emokit_read_data failed")
