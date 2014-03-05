@@ -79,6 +79,20 @@ func (e *EmokitContext) GetFrame() (*EmokitFrame, error) {
 	return nil, syscall.EAGAIN
 }
 
+// WaitGetFrame will block until there is a frame ready to read, and
+// then return it. 
+func (e *EmokitContext) WaitGetFrame() (*EmokitFrame, error) {
+	for {
+		f, err := e.GetFrame()
+		if err == nil {
+			return f, nil
+		} else if err == syscall.EAGAIN {
+			continue
+		}
+		return nil, err
+	}
+}
+
 // Raw returns the (unencrypted) raw EPOC frame.
 func (f *EmokitFrame) Raw() []byte {
 	return f.raw
