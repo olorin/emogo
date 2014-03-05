@@ -7,6 +7,7 @@ package emogo
 import (
 	"errors"
 	"unsafe"
+	"fmt"
 )
 
 // #include <emokit/emokit.h>
@@ -18,8 +19,15 @@ import "C"
 // linking them in for some reason.
 const (
 	EMOKIT_VID int = 0x21a1
-	EMOKIT_PID int = 0x0001
+	EMOKIT_PID  = 0x0001
 	EmokitPacketSize = 32
+)
+
+type HeadsetType uint
+
+const (
+	DeveloperHeadset HeadsetType = 0
+	ConsumerHeadset HeadsetType = 1
 )
 
 // EmokitContext represents a connection to an EPOC device. 
@@ -27,10 +35,10 @@ type EmokitContext struct {
 	eeg *C.struct_emokit_device
 }
 
-func NewEmokitContext() (*EmokitContext, error) {
+func NewEmokitContext(t HeadsetType) (*EmokitContext, error) {
 	e := new(EmokitContext)
 	e.eeg = C.emokit_create()
-	ret := C.emokit_open(e.eeg, C.int(EMOKIT_VID), C.int(EMOKIT_PID), 0)
+	ret := C.emokit_open(e.eeg, C.int(EMOKIT_VID), C.int(EMOKIT_PID), C.uint(t))
 	if ret != 0 {
 		return nil, errors.New("Cannot access device.")
 	}
@@ -51,7 +59,9 @@ func NewEmokitFrame() *EmokitFrame {
 // readData reads data from the EPOC dongle and returns 0 on success, <0
 // on error.
 func (e *EmokitContext) readData() error {
+	fmt.Println("getting some data")
 	n := C.emokit_read_data(e.eeg)
+	fmt.Println("got some data")
 	if n >= 0 {
 		return nil
 	}
@@ -90,4 +100,9 @@ func (e *EmokitContext) Count() int {
 // Raw returns the (unencrypted) raw EPOC frame.
 func (f *EmokitFrame) Raw() []byte {
 	return f.raw
+}
+
+// Gyro returns the current (x,y) of the frame's Gyro value.
+func (f *EmokitFrame) Gyro() (int,int) {
+	return int(f.rendered.gyroX), int(f.rendered.gyroY)
 }
