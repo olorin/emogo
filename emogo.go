@@ -96,6 +96,7 @@ func (e *EmokitContext) GetFrame() (*EmokitFrame, error) {
 	return nil, err
 }
 
+// Count returns the number of EPOC devices connected.
 func (e *EmokitContext) Count() int {
 	n := C.emokit_get_count(e.eeg, C.int(EMOKIT_VID), C.int(EMOKIT_PID))
 	return int(n)
@@ -109,4 +110,10 @@ func (f *EmokitFrame) Raw() []byte {
 // Gyro returns the current (x,y) of the frame's Gyro value.
 func (f *EmokitFrame) Gyro() (int,int) {
 	return int(f.rendered.gyroX), int(f.rendered.gyroY)
+}
+
+// Battery returns the current battery level of the device. May be 0 if
+// the battery level has not yet been read.
+func (f *EmokitFrame) Battery() uint {
+	return uint(f.rendered.battery)
 }
