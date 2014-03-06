@@ -44,6 +44,13 @@ func NewEmokitContext(t HeadsetType) (*EmokitContext, error) {
 	return e, nil
 }
 
+// Shutdown closes the connection to the EPOC and frees associated 
+// memory.
+func (c *EmokitContext) Shutdown() {
+	C.emokit_close(c.eeg)
+	C.emokit_delete(c.eeg)
+}
+
 type EmokitFrame struct {
 	raw []byte
 	rendered C.struct_emokit_frame
