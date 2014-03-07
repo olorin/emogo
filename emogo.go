@@ -170,3 +170,8 @@ func (f *EmokitFrame) Gyro() (int,int) {
 func (f *EmokitFrame) Battery() uint {
 	return uint(f.rendered.battery)
 }
+
+// Counter returns the counter value of the frame (0-127). 
+func (f *EmokitFrame) Counter() uint {
+	return uint(f.rendered.counter)
+}
