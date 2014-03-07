@@ -51,15 +51,67 @@ func (c *EmokitContext) Shutdown() {
 	C.emokit_delete(c.eeg)
 }
 
+type EmokitSensor struct {
+	value int
+	quality int
+}
+
 type EmokitFrame struct {
 	raw []byte
 	rendered C.struct_emokit_frame
+	F3 EmokitSensor
+	FC6 EmokitSensor
+	P7 EmokitSensor
+	T8 EmokitSensor
+	F7 EmokitSensor
+	F8 EmokitSensor
+	T7 EmokitSensor
+	P8 EmokitSensor
+	AF4 EmokitSensor
+	F4 EmokitSensor
+	AF3 EmokitSensor
+	O2 EmokitSensor
+	O1 EmokitSensor
+	FC5 EmokitSensor
 }
 
 func NewEmokitFrame() *EmokitFrame {
 	f := new(EmokitFrame)
 	f.raw = make([]byte, EmokitPacketSize)
 	return f
+}
+
+// parseSensors populates the EmokitSensor elements of the frame from
+// the C struct.
+func (f *EmokitFrame) parseSensors() {
+	f.F3.value = int(f.rendered.F3)
+	f.F3.quality = int(f.rendered.cq.F3)
+	f.FC6.value = int(f.rendered.FC6)
+	f.FC6.quality = int(f.rendered.cq.FC6)
+	f.P7.value = int(f.rendered.P7)
+	f.P7.quality = int(f.rendered.cq.P7)
+	f.T8.value = int(f.rendered.T8)
+	f.T8.quality = int(f.rendered.cq.T8)
+	f.F7.value = int(f.rendered.F7)
+	f.F7.quality = int(f.rendered.cq.F7)
+	f.F8.value = int(f.rendered.F8)
+	f.F8.quality = int(f.rendered.cq.F8)
+	f.T7.value = int(f.rendered.T7)
+	f.T7.quality = int(f.rendered.cq.T7)
+	f.P8.value = int(f.rendered.P8)
+	f.P8.quality = int(f.rendered.cq.P8)
+	f.AF4.value = int(f.rendered.AF4)
+	f.AF4.quality = int(f.rendered.cq.AF4)
+	f.F4.value = int(f.rendered.F4)
+	f.F4.quality = int(f.rendered.cq.F4)
+	f.AF3.value = int(f.rendered.AF3)
+	f.AF3.quality = int(f.rendered.cq.AF3)
+	f.O2.value = int(f.rendered.O2)
+	f.O2.quality = int(f.rendered.cq.O2)
+	f.O1.value = int(f.rendered.O1)
+	f.O1.quality = int(f.rendered.cq.O1)
+	f.FC5.value = int(f.rendered.FC5)
+	f.FC5.quality = int(f.rendered.cq.FC5)
 }
 
 // readData reads data from the EPOC dongle and returns 0 on success, <0
@@ -79,6 +131,7 @@ func (e *EmokitContext) getNextFrame() (*EmokitFrame, error) {
 		return nil, errors.New("Could not read raw packet.")
 	}
 	C.emokit_get_raw_frame(e.eeg, (*C.uchar)(unsafe.Pointer(&f.raw[0])))
+	f.parseSensors()
 	return f, nil
 }
 
