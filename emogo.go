@@ -52,8 +52,8 @@ func (c *EmokitContext) Shutdown() {
 }
 
 type EmokitSensor struct {
-	value int
-	quality int
+	Value int
+	Quality int
 }
 
 type EmokitFrame struct {
@@ -84,34 +84,34 @@ func NewEmokitFrame() *EmokitFrame {
 // parseSensors populates the EmokitSensor elements of the frame from
 // the C struct.
 func (f *EmokitFrame) parseSensors() {
-	f.F3.value = int(f.rendered.F3)
-	f.F3.quality = int(f.rendered.cq.F3)
-	f.FC6.value = int(f.rendered.FC6)
-	f.FC6.quality = int(f.rendered.cq.FC6)
-	f.P7.value = int(f.rendered.P7)
-	f.P7.quality = int(f.rendered.cq.P7)
-	f.T8.value = int(f.rendered.T8)
-	f.T8.quality = int(f.rendered.cq.T8)
-	f.F7.value = int(f.rendered.F7)
-	f.F7.quality = int(f.rendered.cq.F7)
-	f.F8.value = int(f.rendered.F8)
-	f.F8.quality = int(f.rendered.cq.F8)
-	f.T7.value = int(f.rendered.T7)
-	f.T7.quality = int(f.rendered.cq.T7)
-	f.P8.value = int(f.rendered.P8)
-	f.P8.quality = int(f.rendered.cq.P8)
-	f.AF4.value = int(f.rendered.AF4)
-	f.AF4.quality = int(f.rendered.cq.AF4)
-	f.F4.value = int(f.rendered.F4)
-	f.F4.quality = int(f.rendered.cq.F4)
-	f.AF3.value = int(f.rendered.AF3)
-	f.AF3.quality = int(f.rendered.cq.AF3)
-	f.O2.value = int(f.rendered.O2)
-	f.O2.quality = int(f.rendered.cq.O2)
-	f.O1.value = int(f.rendered.O1)
-	f.O1.quality = int(f.rendered.cq.O1)
-	f.FC5.value = int(f.rendered.FC5)
-	f.FC5.quality = int(f.rendered.cq.FC5)
+	f.F3.Value = int(f.rendered.F3)
+	f.F3.Quality = int(f.rendered.cq.F3)
+	f.FC6.Value = int(f.rendered.FC6)
+	f.FC6.Quality = int(f.rendered.cq.FC6)
+	f.P7.Value = int(f.rendered.P7)
+	f.P7.Quality = int(f.rendered.cq.P7)
+	f.T8.Value = int(f.rendered.T8)
+	f.T8.Quality = int(f.rendered.cq.T8)
+	f.F7.Value = int(f.rendered.F7)
+	f.F7.Quality = int(f.rendered.cq.F7)
+	f.F8.Value = int(f.rendered.F8)
+	f.F8.Quality = int(f.rendered.cq.F8)
+	f.T7.Value = int(f.rendered.T7)
+	f.T7.Quality = int(f.rendered.cq.T7)
+	f.P8.Value = int(f.rendered.P8)
+	f.P8.Quality = int(f.rendered.cq.P8)
+	f.AF4.Value = int(f.rendered.AF4)
+	f.AF4.Quality = int(f.rendered.cq.AF4)
+	f.F4.Value = int(f.rendered.F4)
+	f.F4.Quality = int(f.rendered.cq.F4)
+	f.AF3.Value = int(f.rendered.AF3)
+	f.AF3.Quality = int(f.rendered.cq.AF3)
+	f.O2.Value = int(f.rendered.O2)
+	f.O2.Quality = int(f.rendered.cq.O2)
+	f.O1.Value = int(f.rendered.O1)
+	f.O1.Quality = int(f.rendered.cq.O1)
+	f.FC5.Value = int(f.rendered.FC5)
+	f.FC5.Quality = int(f.rendered.cq.FC5)
 }
 
 // readData reads data from the EPOC dongle and returns 0 on success, <0
