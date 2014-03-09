@@ -165,6 +165,13 @@ func (f *EmokitFrame) Gyro() (int,int) {
 	return int(f.rendered.gyroX), int(f.rendered.gyroY)
 }
 
+func (f *EmokitFrame) BatteryFrame() bool {
+	if f.Counter() == 128 {
+		return true
+	}
+	return false
+}
+
 // Battery returns the current battery level of the device. May be 0 if
 // the battery level has not yet been read.
 func (f *EmokitFrame) Battery() uint {
