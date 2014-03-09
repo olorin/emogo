@@ -51,6 +51,8 @@ func (c *EmokitContext) Shutdown() {
 	C.emokit_delete(c.eeg)
 }
 
+// EmokitSensor represents the state of one sensor/electrode. It
+// consists of both the value reading and the contact quality.
 type EmokitSensor struct {
 	Value int
 	Quality int
@@ -165,6 +167,8 @@ func (f *EmokitFrame) Gyro() (int,int) {
 	return int(f.rendered.gyroX), int(f.rendered.gyroY)
 }
 
+// BatteryFrame returns true if the frame contains a battery-level
+// value, otherwise false.
 func (f *EmokitFrame) BatteryFrame() bool {
 	if f.Counter() == 128 {
 		return true
