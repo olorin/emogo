@@ -10,9 +10,8 @@ install:
   - sudo apt-get install -y cmake build-essential libmcrypt-dev 
   - git clone https://github.com/signal11/hidapi
   - cd hidapi
-  - git checkout hidapi-0.7.0
-  - autoreconf -i
-  - ./configure --prefix=/usr && make && sudo make install
+  - cd linux
+  - make && sudo make install
   - cd ..
   - git clone https://github.com/openyou/emokit
   - cd emokit
