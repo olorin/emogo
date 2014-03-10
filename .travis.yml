@@ -2,3 +2,17 @@ language: go
 
 go:
   - 1.2
+
+env:
+  - EMOKIT_BUILD_SHARED_LIBS=1
+
+install:
+  - sudo apt-get install -y cmake build-essential libmcrypt-dev 
+  - git clone https://github.com/signal11/hidapi
+  - cd hidapi
+  - git checkout hidapi-0.7.0
+  - ./configure --prefix=/usr && make && sudo make install
+  - cd ..
+  - git clone https://github.com/openyou/emokit
+  - cd emokit
+  - cmake . && make && sudo make install
