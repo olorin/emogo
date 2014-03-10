@@ -22,6 +22,10 @@ const (
 	EmokitPacketSize = 32
 )
 
+// HeadsetType is one of (DeveloperHeadset,ConsumerHeadset) - this is a
+// kludge around different device identifiers.
+//
+// FIXME: do this properly in emokit
 type HeadsetType uint
 
 const (
@@ -34,6 +38,8 @@ type EmokitContext struct {
 	eeg *C.struct_emokit_device
 }
 
+// NewEmokitContext initializes the Emokit context. Call Shutdown on the
+// context when done.
 func NewEmokitContext(t HeadsetType) (*EmokitContext, error) {
 	e := new(EmokitContext)
 	e.eeg = C.emokit_create()
